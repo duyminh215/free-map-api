@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+        	<JSONLayout compact="true" eventEol="true" stacktraceAsString="true" properties="true"/>
+            <PatternLayout
+                pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable" />
+        </Console>
+
+        <RollingFile name="InfoLogger"
+            fileName="./logs/info-log4j2.log"
+            filePattern="./logs/$${date:yyyy-MM}/info-log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <JSONLayout compact="true" eventEol="true" stacktraceAsString="true" properties="true"/>
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1000 MB" />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <ThresholdFilter level="INFO"/>
+        </RollingFile>
+		<RollingFile name="ErrorLogger"
+            fileName="./logs/error-log4j2.log"
+            filePattern="./logs/$${date:yyyy-MM}/error-log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <JSONLayout compact="true" eventEol="true" stacktraceAsString="true" properties="true"/>
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1000 MB" />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <ThresholdFilter level="ERROR"/>
+        </RollingFile>
+	</Appenders>
+
+    <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="all">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="InfoLogger" />
+            <AppenderRef ref="ErrorLogger" />
+        </Root>
+
+        <!-- LOG "com.baeldung*" at TRACE level -->
+        <Logger name="com.backend.template" level="trace"></Logger>
+    </Loggers>
+
+</Configuration>
