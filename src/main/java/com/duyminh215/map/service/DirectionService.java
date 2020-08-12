@@ -3,6 +3,7 @@ package com.duyminh215.map.service;
 import com.duyminh215.map.dto.input.DirectionInputDto;
 import com.duyminh215.map.dto.input.Point;
 import com.duyminh215.map.dto.output.DirectionDto;
+import com.duyminh215.map.dto.output.RouteDto;
 import com.duyminh215.map.profile.MapProfile;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
@@ -12,6 +13,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -32,9 +35,16 @@ public class DirectionService {
         if(rsp.hasErrors()) {
             logger.error(rsp.getErrors());
         }
-        ResponsePath path = rsp.getBest();
         DirectionDto directionDto = new DirectionDto();
-        directionDto.setResponsePath(path);
+        List<RouteDto> routes = new ArrayList<>();
+        if(rsp.getAll() != null && !rsp.getAll().isEmpty()){
+            for(ResponsePath responsePath : rsp.getAll()){
+                RouteDto routeDto = new RouteDto();
+                routeDto.loadDataFromResponsePath(responsePath);
+                routes.add(routeDto);
+            }
+        }
+        directionDto.setRoutes(routes);
         return directionDto;
     }
 

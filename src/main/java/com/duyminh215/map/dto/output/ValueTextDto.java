@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ValueTextDto {
-    private long value;
+    private double value;
     private String text;
 }

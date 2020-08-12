@@ -15,5 +15,4 @@ import java.util.List;
 public class DirectionDto {
     private List geocoded_waypoints;
     private List<RouteDto> routes;
-    private ResponsePath responsePath;
 }
