@@ -51,24 +51,16 @@ public class MapProfile {
     public static List<Profile> getSupportedProfiles(){
         Profile bikeProfile = new Profile(GraphHopperConstants.PROFILE_BIKE)
                 .setVehicle(GraphHopperConstants.PROFILE_BIKE)
-                .setWeighting(GraphHopperConstants.WEIGHTING_SHORT_FASTEST)
-//                .setWeighting(GraphHopperConstants.WEIGHTING_SHORTEST)
-                ;
+                .setWeighting(GraphHopperConstants.WEIGHTING_SHORT_FASTEST);
         Profile carProfile = new Profile(GraphHopperConstants.PROFILE_CAR)
                 .setVehicle(GraphHopperConstants.PROFILE_CAR)
-                .setWeighting(GraphHopperConstants.WEIGHTING_SHORT_FASTEST)
-//                .setWeighting(GraphHopperConstants.WEIGHTING_SHORTEST)
-                ;
+                .setWeighting(GraphHopperConstants.WEIGHTING_SHORT_FASTEST);
         Profile footProfile = new Profile(GraphHopperConstants.PROFILE_FOOT)
                 .setVehicle(GraphHopperConstants.PROFILE_FOOT)
-                .setWeighting(GraphHopperConstants.WEIGHTING_SHORT_FASTEST)
-//                .setWeighting(GraphHopperConstants.WEIGHTING_SHORTEST)
-                ;
+                .setWeighting(GraphHopperConstants.WEIGHTING_SHORT_FASTEST);
         Profile motorcycleProfile = new Profile(GraphHopperConstants.PROFILE_MOTORCYCLE)
                 .setVehicle(GraphHopperConstants.PROFILE_MOTORCYCLE)
-                .setWeighting(GraphHopperConstants.WEIGHTING_SHORT_FASTEST)
-//                .setWeighting(GraphHopperConstants.WEIGHTING_SHORTEST)
-                ;
+                .setWeighting(GraphHopperConstants.WEIGHTING_SHORT_FASTEST);
         List<Profile> supportedProfiles = new ArrayList<>();
         supportedProfiles.add(bikeProfile);
         supportedProfiles.add(carProfile);
