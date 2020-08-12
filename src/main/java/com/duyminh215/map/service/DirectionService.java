@@ -40,6 +40,7 @@ public class DirectionService {
         if(rsp.getAll() != null && !rsp.getAll().isEmpty()){
             for(ResponsePath responsePath : rsp.getAll()){
                 RouteDto routeDto = new RouteDto();
+                routeDto.setVehicle(directionInputDto.getVehicle());
                 routeDto.loadDataFromResponsePath(responsePath);
                 routes.add(routeDto);
             }

@@ -1,6 +1,7 @@
 package com.duyminh215.map.dto.output;
 
 import com.duyminh215.map.dto.input.Point;
+import com.duyminh215.map.utils.Utils;
 import com.graphhopper.util.Instruction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class StepDto {
         long timeInSecond = instruction.getTime()/1000;
         ValueTextDto duration = new ValueTextDto();
         duration.setValue(timeInSecond);
-        duration.setText(timeInSecond + " seconds");
+        duration.setText(Utils.convertNumberOfSecondToDisplayTime(timeInSecond));
         this.duration = duration;
     }
 
@@ -42,7 +43,7 @@ public class StepDto {
         double distanceInMeter = instruction.getDistance();
         ValueTextDto distance = new ValueTextDto();
         distance.setValue(instruction.getDistance());
-        distance.setText(distanceInMeter + " m");
+        distance.setText(Utils.convertNumberOfMeterToDisplayDistance(distanceInMeter));
         this.distance = distance;
     }
 }

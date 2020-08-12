@@ -1,5 +1,6 @@
 package com.duyminh215.map.dto.output;
 
+import com.duyminh215.map.utils.Utils;
 import com.graphhopper.ResponsePath;
 import com.graphhopper.util.Instruction;
 import com.graphhopper.util.InstructionList;
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RouteDto {
     private String summary;
+    private String vehicle;
     private Object bound;
     private List<StepDto> legs;
     private Object warnings;
@@ -38,19 +40,27 @@ public class RouteDto {
         for(Instruction instruction : instructions){
             StepDto stepDto = new StepDto();
             stepDto.loadDataFromInstruction(instruction);
-            if(stepDto.getName() == null || stepDto.getName().isEmpty()){
-                String nextStepName = getNameOfNextInstruction(instructions, i);
-                if(!nextStepName.isEmpty()){
-                    stepDto.setName(nextStepName);
-                }else{
-                    String previousStepName = getNameOfPreviousInstruction(instructions, i);
-                    stepDto.setName(previousStepName);
-                }
-            }
+            stepDto.setTravel_mode(Utils.getTravelModeByVehicle(this.vehicle));
+            setNameOfStepInRoutes(stepDto, instructions, i);
             steps.add(stepDto);
             i++;
         }
         return steps;
+    }
+
+    public void setNameOfStepInRoutes(StepDto stepDto, InstructionList instructions, int i){
+        if(stepDto.getName() != null && !stepDto.getName().isEmpty()){
+            return;
+        }
+        String nextStepName = getNameOfNextInstruction(instructions, i);
+        if(!nextStepName.isEmpty()){
+            stepDto.setName(nextStepName);
+        }else{
+            String previousStepName = getNameOfPreviousInstruction(instructions, i);
+            if(!previousStepName.isEmpty()){
+                stepDto.setName(previousStepName);
+            }
+        }
     }
 
     private String getNameOfNextInstruction(InstructionList instructions, int index){
@@ -70,6 +80,7 @@ public class RouteDto {
     }
 
     public String generateSummary(){
-        return "distance = " + this.distance + "m, time = " + this.time + "s";
+        return "distance = " + Utils.convertNumberOfMeterToDisplayDistance(this.distance) +
+                ", time = " + Utils.convertNumberOfSecondToDisplayTime(this.time);
     }
 }
