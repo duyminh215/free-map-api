@@ -1,8 +1,11 @@
 package com.duyminh215.map.service;
 
+import com.duyminh215.map.constant.GraphHopperConstants;
 import com.duyminh215.map.dto.input.DirectionInputDto;
+import com.duyminh215.map.dto.input.MatrixDistanceInputDto;
 import com.duyminh215.map.dto.input.Point;
 import com.duyminh215.map.dto.output.DirectionDto;
+import com.duyminh215.map.dto.output.MatrixDistanceRowsDto;
 import com.duyminh215.map.dto.output.RouteDto;
 import com.duyminh215.map.profile.MapProfile;
 import com.graphhopper.GHRequest;
@@ -49,7 +52,7 @@ public class DirectionService {
         return directionDto;
     }
 
-    public Point convertPointFromInput(String input){
+    private Point convertPointFromInput(String input){
         if(input == null || input.isEmpty()){
             return new Point();
         }
@@ -62,5 +65,23 @@ public class DirectionService {
         return new Point(latitude, longitude);
     }
 
+    public MatrixDistanceRowsDto matrixDistance(MatrixDistanceInputDto matrixDistanceInputDto){
+        MapProfile mapProfile = MapProfile.getInstance();
+        Point originPoint = convertPointFromInput(matrixDistanceInputDto.getOrigins());
+        Point destinationPoint = convertPointFromInput(matrixDistanceInputDto.getDestinations());
+        GHRequest req = new GHRequest(originPoint.getLat(), originPoint.getLng(),
+                destinationPoint.getLat(), destinationPoint.getLng())
+                .setProfile(GraphHopperConstants.PROFILE_MOTORCYCLE)
+                .setLocale(Locale.US);
+        GraphHopper graphHopper = mapProfile.getHopper();
+        GHResponse rsp = graphHopper.route(req);
+        if(rsp.hasErrors()) {
+            logger.error(rsp.getErrors());
+        }
+        ResponsePath path = rsp.getBest();
+        MatrixDistanceRowsDto matrixDistanceRowsDto = new MatrixDistanceRowsDto();
+        matrixDistanceRowsDto.loadFromResponsePath(path);
+        return matrixDistanceRowsDto;
+    }
 
 }
