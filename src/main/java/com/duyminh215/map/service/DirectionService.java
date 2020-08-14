@@ -26,14 +26,13 @@ public class DirectionService {
     private static final Logger logger = LogManager.getLogger(DirectionService.class);
 
     public DirectionDto direction(DirectionInputDto directionInputDto){
-        MapProfile mapProfile = MapProfile.getInstance();
+        GraphHopper graphHopper = getGraphHopper();
         Point originPoint = convertPointFromInput(directionInputDto.getOrigin());
         Point destinationPoint = convertPointFromInput(directionInputDto.getDestination());
         GHRequest req = new GHRequest(originPoint.getLat(), originPoint.getLng(),
                 destinationPoint.getLat(), destinationPoint.getLng())
                 .setProfile(directionInputDto.getVehicle())
                 .setLocale(Locale.US);
-        GraphHopper graphHopper = mapProfile.getHopper();
         GHResponse rsp = graphHopper.route(req);
         if(rsp.hasErrors()) {
             logger.error(rsp.getErrors());
@@ -66,14 +65,13 @@ public class DirectionService {
     }
 
     public MatrixDistanceRowsDto matrixDistance(MatrixDistanceInputDto matrixDistanceInputDto){
-        MapProfile mapProfile = MapProfile.getInstance();
+        GraphHopper graphHopper = getGraphHopper();
         Point originPoint = convertPointFromInput(matrixDistanceInputDto.getOrigins());
         Point destinationPoint = convertPointFromInput(matrixDistanceInputDto.getDestinations());
         GHRequest req = new GHRequest(originPoint.getLat(), originPoint.getLng(),
                 destinationPoint.getLat(), destinationPoint.getLng())
                 .setProfile(GraphHopperConstants.PROFILE_MOTORCYCLE)
                 .setLocale(Locale.US);
-        GraphHopper graphHopper = mapProfile.getHopper();
         GHResponse rsp = graphHopper.route(req);
         if(rsp.hasErrors()) {
             logger.error(rsp.getErrors());
@@ -82,6 +80,11 @@ public class DirectionService {
         MatrixDistanceRowsDto matrixDistanceRowsDto = new MatrixDistanceRowsDto();
         matrixDistanceRowsDto.loadFromResponsePath(path);
         return matrixDistanceRowsDto;
+    }
+
+    private GraphHopper getGraphHopper(){
+        MapProfile.getInstance();
+        return  MapProfile.getHopper();
     }
 
 }
