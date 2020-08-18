@@ -8,8 +8,6 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -17,12 +15,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import com.duyminh215.map.config.LoggableDispatcherServlet;
 
 @SpringBootApplication
-@EnableJpaAuditing
 @EnableResourceServer
 @EnableAuthorizationServer
-@EnableJpaRepositories(basePackages = "com.backend.template.repositories",
-    entityManagerFactoryRef = "entityManagerFactory", 
-    transactionManagerRef = "transactionManager")
 @EntityScan("com.duyminh215.map.model")
 @ComponentScan({ "com.duyminh215.map.*" })
 @EnableCaching
